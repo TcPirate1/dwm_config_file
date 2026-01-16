@@ -67,16 +67,13 @@ static const char *termcmd[] = { "ghostty", NULL };
 static const char *browser[] = { "firefox" , NULL };
 static const char *files[] = { "thunar" , NULL };
 static const char *obsidian[] = { "obsidian" , NULL };
-static const char *writer[] = { "libreoffice" , NULL };
-static const char *upvol[]      = { "/usr/bin/wpctl",   "set-sink-volume", "@DEFAULT_AUDIO_SINK@", "+5%", NULL };
-static const char *downvol[]    = { "/usr/bin/wpctl",   "set-sink-volume", "@DEFAULT_AUDIO_SINK@", "-5%", NULL };
-static const char *mutevol[]    = { "/usr/bin/wpctl",   "set-sink-mute", "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
+static const char *writer[] = { "libreoffice", "--writer", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ 0,                       	XF86XK_AudioLowerVolume, spawn, {.v = downvol } },
-	{ 0,                       	XF86XK_AudioMute, spawn, {.v = mutevol } },
-	{ 0,                       	XF86XK_AudioRaiseVolume, spawn, {.v = upvol } },
+	{ 0,                       	XF86XK_AudioLowerVolume, spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+8 dwmblocks") },
+	{ 0,                       	XF86XK_AudioMute, spawn, SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+8 dwmblocks") },
+	{ 0,                       	XF86XK_AudioRaiseVolume, spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+8 dwmblocks") },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,			XK_w,	   spawn,	   {.v = browser } },
