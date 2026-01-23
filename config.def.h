@@ -68,12 +68,16 @@ static const char *browser[] = { "firefox" , NULL };
 static const char *files[] = { "thunar" , NULL };
 static const char *obsidian[] = { "obsidian" , NULL };
 static const char *writer[] = { "libreoffice", "--writer", NULL };
+static const char *flameshot[] = { "flameshot", "gui", NULL }; // ctrl+a to capture entire screen, esc to leave any flameshot window
+static const char *flameshot_config[] = { "flameshot", "config", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ 0,                       	XF86XK_AudioLowerVolume, spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+8 dwmblocks") },
-	{ 0,                       	XF86XK_AudioMute, spawn, SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+8 dwmblocks") },
-	{ 0,                       	XF86XK_AudioRaiseVolume, spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+8 dwmblocks") },
+	{ 0,                       	XF86XK_AudioLowerVolume, spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && kill -42 $(pidof dwmblocks)") },
+	{ 0,                       	XF86XK_AudioMute, spawn, SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -42 $(pidof dwmblocks)") },
+	{ 0,                       	XF86XK_AudioRaiseVolume, spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && kill -42 $(pidof dwmblocks)") },
+	{ 0,				XK_Print,  spawn, 	   {.v = flameshot } },
+	{ ControlMask,			XK_F12,    spawn,	   {.v = flameshot_config } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,			XK_w,	   spawn,	   {.v = browser } },
